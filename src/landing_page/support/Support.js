@@ -1,8 +1,14 @@
 import React from 'react'
 
+import CreateTickets from './CreateTickets'
+import Hero from './Hero'
+
 function Support() {
   return (
-    <div>Support</div>
+   <>
+     <Hero />
+      <CreateTickets />
+   </>
   )
 }
 
