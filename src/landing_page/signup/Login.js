@@ -9,21 +9,23 @@ import {
   Typography,
   Container,
   Paper,
+  CircularProgress,
+  Backdrop,
 } from "@mui/material";
 import axios from "axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 const defaultTheme = createTheme();
 
-export default function Signup() {
-  
+export default function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [successLoading, setSuccessLoading] = useState(false); 
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -37,25 +39,28 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-  try {
-      const res = await axios.post("http://localhost:3000/signup", formData, {
+    try {
+      const res = await axios.post("http://localhost:3000/login", formData, {
         headers: { "Content-Type": "application/json" },
       });
 
-      if (res.status === 201) {
-        toast.success("Signup successful!", { position: "top-right" });
-        setFormData({ name: "", email: "", password: "" });
+      if (res.status === 200) {
+        setFormData({ email: "", password: "" });
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        // 2 sec wait then redirect
+        toast.success("Login successful!", { position: "top-right" });
+        setSuccessLoading(true);
         setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+          window.location.href = "http://localhost:3001/";
+        }, 1500);
       } else {
-        toast.error(res.data?.message || "Signup failed!");
+        toast.error(res.data?.message || "Login failed!");
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Something went wrong!");
+      toast.error(err.response?.data?.message || "Invalid email or password!");
       console.error(err);
     }
   };
@@ -80,23 +85,17 @@ export default function Signup() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-            Create Your Account
+            Login Your Account
           </Typography>
 
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, width: "100%" }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 2, width: "100%" }}
+          >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="name"
-                  label="Full Name"
-                  name="name"
-                  autoComplete="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </Grid>
+              <Grid item xs={12}></Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -142,12 +141,19 @@ export default function Signup() {
 
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to={"/login"} variant="body2">
-                  Already have an account? Sign in
+                <Link to={"/signup"} variant="body2">
+                  Don't have an account? Sign up
                 </Link>
               </Grid>
             </Grid>
           </Box>
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={successLoading}
+          >
+            <CircularProgress color="inherit" />
+            <Typography sx={{ ml: 2 }}>Redirecting to Dashboard...</Typography>
+          </Backdrop>
         </Paper>
       </Container>
     </ThemeProvider>
