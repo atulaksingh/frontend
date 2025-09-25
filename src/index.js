@@ -18,23 +18,26 @@ import Home from "./components/Home";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <TopNav />
-    <Routes>
-      
-      <Route path="/" element={<HomePage />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/product" element={<ProductPage />} />
-      <Route path="/pricing" element={<PricingPage />} />
-      <Route path="/support" element={<Support />} />
-      
-      <Route path="/dashboard/*" element={<Home />} />
-      <Route path="*" element={<NotFound />} />
+  <TopNav />
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route path="/signup" element={<Signup />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/about" element={<AboutPage />} />
+    <Route path="/product" element={<ProductPage />} />
+    <Route path="/pricing" element={<PricingPage />} />
+    <Route path="/support" element={<Support />} />
 
-    </Routes>
-    <Footer />
-  </BrowserRouter>
+    {/* Dashboard nested route */}
+    {/* <Route path="/dashboard/*" element={<Dashboard />} /> */}
+
+    <Route path="/dashboard/*" element={<Home />} />
+
+    <Route path="*" element={<NotFound />} />
+  </Routes>
+  <Footer />
+</BrowserRouter>
+
 );
 
 // If you want to start measuring performance in your app, pass a function
