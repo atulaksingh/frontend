@@ -18,9 +18,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 const defaultTheme = createTheme();
+const API = process.env.REACT_APP_API_URL;
 
 export default function Signup() {
-  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -38,8 +38,8 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  try {
-      const res = await axios.post("http://localhost:3000/signup", formData, {
+    try {
+      const res = await axios.post(`${API}/signup`, formData, {
         headers: { "Content-Type": "application/json" },
       });
 
@@ -83,46 +83,60 @@ export default function Signup() {
             Create Your Account
           </Typography>
 
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2, width: "100%" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="name"
-                  label="Full Name"
-                  name="name"
-                  autoComplete="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </Grid>
-            </Grid>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 2, width: "100%" }}
+          >
+  
+
+            <Box display="flex" justifyContent="center">
+              <TextField
+                variant="outlined"
+                // size="small"
+                sx={{ m: 1, width: "70%" }}
+                required
+                fullWidth
+                id="name"
+                label="Full Name"
+                name="name"
+                autoComplete="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </Box>
+            <Box display="flex" justifyContent="center">
+              <TextField
+                variant="outlined"
+                // size="small"
+                sx={{ m: 1, width: "70%" }}
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </Box>
+            <Box display="flex" justifyContent="center">
+              <TextField
+                variant="outlined"
+                // size="small"
+                sx={{ m: 1, width: "70%" }}
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </Box>
 
             <Button
               type="submit"

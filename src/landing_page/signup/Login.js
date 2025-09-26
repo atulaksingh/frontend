@@ -20,7 +20,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 const defaultTheme = createTheme();
-
+const API = process.env.REACT_APP_API_URL;
 export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/login", formData, {
+      const res = await axios.post(`${API}/login`, formData, {
         headers: { "Content-Type": "application/json" },
       });
 
@@ -54,7 +54,7 @@ export default function Login() {
         toast.success("Login successful!", { position: "top-right" });
         setSuccessLoading(true);
         setTimeout(() => {
-          window.location.href = "http://localhost:3001/dashboard";
+          window.location.href = "http://localhost:3000/dashboard";
         }, 1500);
       } else {
         toast.error(res.data?.message || "Login failed!");
