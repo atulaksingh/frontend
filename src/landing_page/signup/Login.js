@@ -54,7 +54,7 @@ export default function Login() {
         toast.success("Login successful!", { position: "top-right" });
         setSuccessLoading(true);
         setTimeout(() => {
-          window.location.href = "http://localhost:3000/dashboard";
+          window.location.href = "/dashboard";
         }, 1500);
       } else {
         toast.error(res.data?.message || "Login failed!");
