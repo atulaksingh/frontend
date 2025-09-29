@@ -4,7 +4,7 @@ import axios from "axios";
 
 // import "./SellActionWindow.css";
 import GeneralContext from "./GeneralContext";
-
+const API = process.env.REACT_APP_API_URL;
 const SellActionWindow = ({ uid }) => {
   const { closeSellWindow } = useContext(GeneralContext);
 
@@ -14,7 +14,7 @@ const SellActionWindow = ({ uid }) => {
   const [message, setMessage] = useState("");
   const handleSellClick = async () => {
     try {
-      const res = await axios.post("http://localhost:3000/newOrder", {
+      const res = await axios.post(`${API}/newOrder`, {
         name: uid,
         qty: Number(stockQuantity),
         price: Number(stockPrice),

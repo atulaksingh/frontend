@@ -9,6 +9,7 @@ import {
   Typography,
   Container,
   Paper,
+  CircularProgress
 } from "@mui/material";
 import axios from "axios";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -22,6 +23,7 @@ const API = process.env.REACT_APP_API_URL;
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,7 +39,7 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+   setLoading(true); 
     try {
       const res = await axios.post(`${API}/signup`, formData, {
         headers: { "Content-Type": "application/json" },
@@ -57,6 +59,8 @@ export default function Signup() {
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong!");
       console.error(err);
+    }finally {
+      setLoading(false);   // 👈 stop loading always
     }
   };
 
@@ -138,7 +142,7 @@ export default function Signup() {
               />
             </Box>
 
-            <Button
+               <Button
               type="submit"
               fullWidth
               variant="contained"
@@ -150,8 +154,9 @@ export default function Signup() {
                 textTransform: "none",
                 fontSize: "16px",
               }}
+              disabled={loading}  
             >
-              Sign Up
+              {loading ? <CircularProgress size={24} color="inherit" /> : "Sign Up"}
             </Button>
 
             <Grid container justifyContent="flex-end">

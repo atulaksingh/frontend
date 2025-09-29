@@ -4,7 +4,7 @@ import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
 import "./BuyActionWindow.css";
-
+const API = process.env.REACT_APP_API_URL;
 const BuyActionWindow = ({ uid }) => {
   const { closeBuyWindow } = useContext(GeneralContext);
 
@@ -15,7 +15,7 @@ const BuyActionWindow = ({ uid }) => {
 
   const handleBuyClick = async () => {
     try {
-      const res = await axios.post("http://localhost:3000/newOrder", {
+      const res = await axios.post(`${API}/newOrder`, {
         name: uid,
         qty: Number(stockQuantity),
         price: Number(stockPrice),
